@@ -72,12 +72,14 @@ public class Main {
      */
     static double sumD1(double[] a, int n) {
         double result = 0;
+        Arrays.sort(a);
         for (int i=0; i<n; i++)
             result += a[i];
         return result;
     }
     static float sumF1(double[] a, int n) {
         float result = 0;
+        Arrays.sort(a);
         for (int i=0; i<n; i++)
             result += (float)a[i];
         return result;
@@ -85,12 +87,14 @@ public class Main {
     /***/
     static double sumD2(double[] a, int n) {
         double result = 0;
+        Arrays.sort(a);
         for (int i=n-1; i>=0; i--)
             result += a[i];
         return result;
     }
     static float sumF2(double[] a, int n) {
         float result = 0;
+        Arrays.sort(a);
         for (int i=n-1; i>=0; i--)
             result += (float)a[i];
         return result;
@@ -98,6 +102,7 @@ public class Main {
     /***/
     static double sumD3(double[] a, int n) {
         double result = 0;
+        Arrays.sort(a);
         int[] flags = new int[n];
         for (int i=0; i<n; i++)
             flags[i] = 0;
@@ -115,6 +120,7 @@ public class Main {
     }
     static float sumF3(double[] a, int n) {
         float result = 0;
+        Arrays.sort(a);
         int[] flags = new int[n];
         for (int i=0; i<n; i++)
             flags[i] = 0;
@@ -146,14 +152,24 @@ public class Main {
         System.out.println("Size    |       Error 1         |       Error 2         |       Error 3");
         System.out.println("--------------------------------------------------------------------------------");
         int[] n = {10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
+        int[] best = {0, 0 ,0};
         for (int i=0; i<9; i++) {
             System.out.print(n[i] + "   \t" + "|");
             double[] arr = new double[n[i]];
             genArr(arr, n[i]);
-            System.out.print(" " + absoluteError(sumF1(arr, n[i]), sumD1(arr, n[i])) + "\t" + "|");
-            System.out.print(" " + absoluteError(sumF2(arr, n[i]), sumD2(arr, n[i])) + "\t" + "|");
-            System.out.println(" " + absoluteError(sumF3(arr, n[i]), sumD3(arr, n[i])));
+            double Error1 = absoluteError(sumF1(arr, n[i]), sumD1(arr, n[i]));
+            double Error2 = absoluteError(sumF2(arr, n[i]), sumD2(arr, n[i]));
+            double Error3 = absoluteError(sumF3(arr, n[i]), sumD3(arr, n[i]));
+            System.out.print(" " + Error1 + "\t" + "|");
+            System.out.print(" " + Error2 + "\t" + "|");
+            System.out.println(" " + Error3);
+
+            if (Math.min(Error1, Math.min(Error2, Error3)) == Error1) best[0]++;
+            if (Math.min(Error1, Math.min(Error2, Error3)) == Error2) best[1]++;
+            if (Math.min(Error1, Math.min(Error2, Error3)) == Error3) best[2]++;
         }
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Best: \nError 1 - " + best[0] + "\nError 2 - " + best[1] + "\nError 3 - " + best[2]);
     }
 
 
@@ -193,7 +209,7 @@ public class Main {
         System.out.print("Абсолютная погрешность: ");
         System.out.println(absoluteError(sumF3(arr, n), sumD3(arr, n)));
         System.out.println("");
-        
+
         table();
 
     }
